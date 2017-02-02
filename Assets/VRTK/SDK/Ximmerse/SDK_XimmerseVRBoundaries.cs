@@ -21,14 +21,13 @@
         /// <returns>A transform of the object representing the play area in the scene.</returns>
         public override Transform GetPlayArea()
         {
-            cachedPlayArea = GetSDKManagerPlayArea();
             if (cachedPlayArea == null)
             {
-                var ximmerseVRPlayArea = FindObjectOfType<PlayAreaRenderer>();
-                if (ximmerseVRPlayArea)
-                {
-                    cachedPlayArea = ximmerseVRPlayArea.transform;
-                }
+                cachedPlayArea = FindObjectOfType<PlayAreaRenderer>().transform;
+            }
+            else if (cachedPlayArea.GetComponent<PlayAreaRenderer>() == null)
+            {
+                cachedPlayArea = FindObjectOfType<PlayAreaRenderer>().transform;
             }
             return cachedPlayArea;
         }
@@ -40,7 +39,7 @@
         /// <returns>A Vector3 array of the points in the scene that represent the play area boundaries.</returns>
         public override Vector3[] GetPlayAreaVertices(GameObject playArea)
         {
-            var area = playArea.GetComponent<PlayAreaRenderer>();
+            var area = playArea.GetComponentInChildren<PlayAreaRenderer>();
             if (area)
             {
                 return area.corners;
@@ -55,7 +54,7 @@
         /// <returns>The thickness of the drawn border.</returns>
         public override float GetPlayAreaBorderThickness(GameObject playArea)
         {
-            var area = playArea.GetComponent<PlayAreaRenderer>();
+            var area = playArea.GetComponentInChildren<PlayAreaRenderer>();
             if (area)
             {
                 return area.borderThickness;
