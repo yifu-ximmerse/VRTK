@@ -103,7 +103,21 @@
         public override uint GetControllerIndex(GameObject controller)
         {
             TrackedObject trackedObject = GetTrackedObject(controller);
-            return (trackedObject ? (uint)trackedObject.controllerInput.handle : uint.MaxValue);
+            if (trackedObject == null)
+            {
+                return uint.MaxValue;
+            }
+            else
+            {
+                switch (trackedObject.source)
+                {
+                    case ControllerType.LeftController:
+                        return 0;
+                    case ControllerType.RightController:
+                        return 1;
+                }
+            }
+            return uint.MaxValue;
         }
 
         /// <summary>
